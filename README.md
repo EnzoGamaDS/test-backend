@@ -8,7 +8,7 @@
 ## Dependencias:
 -   Docker e docker-compose
 -   Instalaçao do Make (Opcional)
--   Clone do frontend (https://github.com/raylison100/test-frontend) (Opcional)
+-   Clone do frontend (https://github.com/EnzoGamaDS/test-frontend) (Opcional)
 
 ### OBJS: Caso não queria usar o front comentar seu container no docker-compose.
 
