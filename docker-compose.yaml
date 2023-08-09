@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  application:
+    container_name: test_backend
+    build:
+      context: ./
+      dockerfile: .setup/Dockerfile
+    volumes:
+      - ./:/var/www/html
+    expose:
+      - 80
+    ports:
+      - "8100:80"
+    networks:
+      - test-backend
+
+  frontend:
+    build:
+      context: ../test-frontend
+      dockerfile: Dockerfile
+    container_name: test_fronted
+    restart: unless-stopped
+    expose:
+      - 80
+    ports:
+      - "8001:80"
+    networks:
+      - test-backend
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: test-banckend
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    networks:
+      - test-backend
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - test-backend
+
+networks:
+  test-backend:
+    driver: bridge
